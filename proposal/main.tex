@@ -9,13 +9,49 @@
 \begin{document}
 \maketitle
 
-\section{Motivation}
+\section{Motivation and Vision}
+% enjoyment of crosswords
+% crosswords are really fun to do together!
+% this is easy in a paper newspaper, but really hard online since only one clue displays at once
+% (paper newspaper does not scale to large amounts of people)
+\subsection{Related Work}
+% - paper on collaborative editing. mention how our case is simpler
 
 \section{Proposed Work}
 \subsection{System Architecture}
+% vue frontend (we want to try something growing and new because it seems interesting)
+% fastapi framework (simple and fast, in python)
+% we are flexible on these choices
+
+% two possible architectures
+% (1) host frontend holds crossword ground truth
+% (2) backend holds crossword ground truth
+% leaning towards (2) since this allows session pauses
+
+% data ingestion (we know its possible since there are many 3rd party crossword apps)
+
+% explain idea in detail
+
 \subsection{Deliverables}
+% source code
+% final report explaining final design and implementation
+% demo of working product
 
 \section{Timeline}
+% research ways/architectures to connect clients together into a shared crossword session
+% research ways to ingest daily crosswords
+% implementation
+% - create UI
+% - set up crossword ingestion
+% - set up connections between clients and any necessary databases (ground truth)
+% - evaluate different methods of rectifying conflicting edits
+% - investigate scalability (stretch goal: many people working on a huge crossword puzzle)
+% finalize source code and testing
+% create presentation and final report
+
+\subsection{Stretch Goals and Future Work}
+% - expand to sudoku
+% - ...
 
 \newpage
 \bibliography{sources.bib}
