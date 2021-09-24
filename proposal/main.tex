@@ -11,6 +11,7 @@
 \maketitle
 
 \section{Motivation and Vision}
+\label{mot}
 When doing a crossword puzzle from a physical newspaper, it is easy for a few people to gather around and work on solving it together.
 This is because all of the clues are visible at once, so each person can scan around for clues they know the answer to. However, this technique
 for crossword collaboration does not extend well into the digital world. Most major websites that host interactive crosswords only show a small subset of
@@ -32,7 +33,36 @@ The ultimate aim of Crosshatch is to provide a crossword collaboration experienc
 % - paper on collaborative editing. mention how our case is simpler
 
 \section{Proposed Work}
+Expanding on the overarching vision expressed in Section \ref{mot}, the aim of the Crosshatch web application is to provide the following
+specific features:
+\begin{itemize}
+  \item A convenient UI for interacting with and solving a crossword puzzle in a web browser
+  \item The ability for multiple people (at least three) to interact with the same crossword puzzle at the same time from different devices
+  \item Daily crossword ingestion from at least one popular free source (LA Times, Wall Street Journal, USA Today, etc.)
+\end{itemize}
+
 \subsection{System Architecture}
+
+In order to execute on the goals of this project, there are multiple important architecture and design decisions that must be made.
+Since Crosshatch
+is a web application, an immediate crossroads is the choice of web libraries. Vue and FastAPI have been chosen
+as initial options for frontend and backend libraries respectively, but are subject to change. Sections \ref{vue}
+and \ref{fastapi} explain the reasoning behind these choices.
+More fundamental than these choices though, is the choice of architecture for the collaboration feature. There are two primary
+options for this, which are explored in Section \ref{collabarch}. Finally, there is a discussion of crossword data ingestion in
+Section \ref{ingestarch}
+
+\subsubsection{Vue}
+\label{vue}
+
+\subsubsection{FastAPI}
+\label{fastapi}
+
+\subsubsection{Collaboration}
+\label{collabarch}
+
+\subsubsection{Data Ingestion}
+\label{ingestarch}
 % vue frontend (we want to try something growing and new because it seems interesting)
 % fastapi framework (simple and fast, in python)
 % we are flexible on these choices
@@ -47,6 +77,12 @@ The ultimate aim of Crosshatch is to provide a crossword collaboration experienc
 % explain idea in detail
 
 \subsection{Deliverables}
+There are three concrete deliverables for the proposed project:
+\begin{itemize}
+  \item The entire source code for Crosshatch
+  \item A final report explaining the design and implementation of Crosshatch
+  \item A comprehensive demo of the final working web application
+\end{itemize}
 % source code
 % final report explaining final design and implementation
 % demo of working product
