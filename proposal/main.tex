@@ -35,23 +35,16 @@ The ultimate aim of Crosshatch is to provide a crossword collaboration experienc
 Crosshatch's core technological design relies on a specific piece of real-time systems technology: collaborative editing.
 Collaborative real-time editors are applications that enable seemingly instantaneous, simultaneous editing 
 of the same digital document by different users.
-Possibly the most popular of collaborative editing tools is Google Docs, a collaborative
+Possibly the most popular of collaborative editing tools is Google Docs \ref{googledocs}, a collaborative
 word document tool similar to Microsoft Office Word.
 The complex problem of creating a network structure to facilitate this type of application has been solved with centralized (Client/Server)
-and P2P models.
-Furthermore, different protocols, such as push-based or semi-synchronous, can be implemented based on the type of information being edited,
+and P2P models \ref{p2p} \ref{p2p2}.
+Furthermore, different protocols, such as push-based \ref{pushbased} or semi-synchronous \ref{semisynchronous}, can be implemented based on the type of information being edited,
 network model constructed, and deadlines for edits to cascade through the network.
-Thankfully, our project is much simpler than collaboration on an Open Office XML (.docx) document; Crosshatch requires only
+Thankfully, Crosshatch is much simpler than collaboration on an Open Office XML (.docx) document; Crosshatch requires only
 single character input at designated points with no formatting or large edits at once. 
 This allows experimentation with the methods discussed above and switch designs
-at relatively low stakes on user-facing application requirements. 
-
-\noindent
-\url{https://dl.acm.org/doi/pdf/10.1145/2933057.2933090} \\
-\url{https://hal.inria.fr/file/index/docid/345911/filename/main.pdf} \\
-\url{https://dl.acm.org/doi/pdf/10.1145/1180875.1180916} \\
-\url{https://link.springer.com/chapter/10.1007/978-94-011-2094-4\_15} \\
-\url{https://www.google.com/docs/about/}
+at relatively low stakes on user-facing application requirements.
 
 \section{Proposed Work}
 Expanding on the overarching vision expressed in Section \ref{mot}, the aim of the Crosshatch web application is to provide the following
