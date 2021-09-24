@@ -74,6 +74,7 @@ options for this, which are explored in Section \ref{collabarch}. Finally, there
 Section \ref{ingestarch}.
 
 \subsubsection{Vue}
+% vue frontend (we want to try something growing and new because it seems interesting)
 \label{vue}
 Vue \cite{vue} is an approachable, versatile, and performant JavaScript framework that is rapidly growing
 in popularity (it currently has 188k stars on GitHub \cite{vuegithub}). The authors have some experience
@@ -83,12 +84,14 @@ relating to it. However, if it does end up being a problem, it is possible to pi
 slightly more familiar like React.
 
 \subsubsection{FastAPI}
+% fastapi framework (simple and fast, in python)
 \label{fastapi}
 FastAPI \cite{fastapi} is a fast, easy, intuitive, and robust web framework written in Python. One of the authors
 has used it before, and found it quite nice.
 
 \subsubsection{Collaboration}
 \label{collabarch}
+<<<<<<< HEAD
 
 The main design decision that goes into executing the collaboration feature of Crosshatch is \textit{where to
   store the ground truth crossword}. It can either be stored on the client-side of whichever user is
@@ -109,10 +112,7 @@ Both options will be explored and researched in the first two weeks of the proje
 % (1) host frontend holds crossword ground truth
 % (2) backend holds crossword ground truth
 % leaning towards (2) since this allows set ssion pauses
-
-% data ingestion (we know its possible since there are many 3rd party crossword apps)
-
-% explain idea in detail
+% we are flexible on these choices
 
 \subsection{Deliverables}
 There are three concrete deliverables for the proposed project:
@@ -148,9 +148,9 @@ There are three concrete deliverables for the proposed project:
     10-17 & Continue to establish foundational source code and UI \\ \hline
     10-24 & Set up crossword ingestion into the application \\ \hline
     10-31 & Create working connections between clients and any
-            necessary application entities (e.g. the ground truth crossword) \\ \hline
+            necessary application entities (e.g., the ground truth crossword) \\ \hline
     11-07 & Test and evaluate different methods of rectifying conflicting edits  \\ \hline
-    11-14 & Investigate scalability of collaboration (i.e., 5+ people working on one crossword) \\ \hline
+    11-14 & Investigate scalability of collaboration (i.e. 5+ people working on one crossword) \\ \hline
     11-21 & Finalize source code and perform bugfixes \\ \hline
     11-28 & Create presentation, demonstration, and final report \\ \hline
 
@@ -160,12 +160,19 @@ There are three concrete deliverables for the proposed project:
 \subsection{Stretch Goals and Future Work}
 % - expand to sudoku
 % - ...
+Our 9 week plan leaves room for design switches and experimentation, disasterous bugfixes, and sudden life events that
+may prevent ample progess. However, in the case that we have extra time to work on our project, we have created stretch
+goals that we would like to complete (in any order).
+\begin{itemize}
+    \item Reinforcing scalability and testing extreme cases of collaborative editing (50+ users)
+    \item Complete logging and system-wide evaluation of useful statistics such as response time over user load
+    \item Extending the application to other single input entry games, such as Sudoku or Picross.
+\end{itemize}
+
+Furthermore, we aim to document our project and release it open-source so other may utilize our techniques and findings.
 
 \newpage
 \bibliography{sources.bib}
 \bibliographystyle{plain}
 
 \end{document}
-
-
-
