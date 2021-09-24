@@ -70,7 +70,7 @@ Section \ref{ingestarch}
 % two possible architectures
 % (1) host frontend holds crossword ground truth
 % (2) backend holds crossword ground truth
-% leaning towards (2) since this allows session pauses
+% leaning towards (2) since this allows set ssion pauses
 
 % data ingestion (we know its possible since there are many 3rd party crossword apps)
 
@@ -83,9 +83,7 @@ There are three concrete deliverables for the proposed project:
   \item A final report explaining the design and implementation of Crosshatch
   \item A comprehensive demo of the final working web application
 \end{itemize}
-% source code
-% final report explaining final design and implementation
-% demo of working product
+% source code % final report explaining final design and implementation % demo of working product
 
 \section{Timeline}
 % research ways/architectures to connect clients together into a shared crossword session
@@ -98,6 +96,20 @@ There are three concrete deliverables for the proposed project:
 % - investigate scalability (stretch goal: many people working on a huge crossword puzzle)
 % finalize source code and testing
 % create presentation and final report
+We have created a 9 week plan whcih includes a week designated for bugfixes and resolution of errors that may
+appear during the design or construction process.
+
+\begin{description}
+    \item[Week 1] Research and experimentation with our methods to connect clients into a shared crossword session
+    \item[Week 2] Further research of above and the ability to ingest daily crosswords from popular sources
+    \item[Week 3] Establish foundational source code and UI
+    \item[Week 4] Set up crossword ingestion into the application
+    \item[Week 5] Create working connections between clients and any necessary application entities (e.g., the ground truth crossword)
+    \item[Week 6] Test and evaluate different methods of rectifying conflicting edits and
+    \item[Week 7] Investigate scalability of collaboration (i.e., 5+ people working on one crossword)
+    \item[Week 8] Buffer week: Finalize source code and perform bugfixes
+    \item[Week 9] Create presentation/demonstration and final report
+\end{description}
 
 \subsection{Stretch Goals and Future Work}
 % - expand to sudoku
