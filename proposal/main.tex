@@ -90,9 +90,12 @@ FastAPI \cite{fastapi} is a fast, easy, intuitive, and robust web framework writ
 has used it before, and found it quite nice.
 
 \subsubsection{Collaboration}
+% two possible architectures
+% (1) host frontend holds crossword ground truth
+% (2) backend holds crossword ground truth
+% leaning towards (2) since this allows session pauses
+% we are flexible on these choices
 \label{collabarch}
-<<<<<<< HEAD
-
 The main design decision that goes into executing the collaboration feature of Crosshatch is \textit{where to
   store the ground truth crossword}. It can either be stored on the client-side of whichever user is
 hosting the shared session, or it can be stored on the server-side in a simple database.
@@ -104,15 +107,24 @@ Both options will be explored and researched in the first two weeks of the proje
 
 \subsubsection{Data Ingestion}
 \label{ingestarch}
-% vue frontend (we want to try something growing and new because it seems interesting)
-% fastapi framework (simple and fast, in python)
-% we are flexible on these choices
+Ideally we would want users to be able to cooperatively work on crosswords from their favorite newspapers.
+Unfortunately, the ingestion of crosswords from popular newspapers is likely the task that has the most complexity. In our initial
+research, we did not find any simple programmatical means, such as an API, that we can utilize to get the information in
+a universally digestable manner.  Most newspapers often have a specific embedded 'online game' that makes collecting
+the crossword data difficult or impossible. There are off-brand sites that have the solutions and clues in a textual form,
+but the graph data is likely not accessible and we would need to scrape the website for any information.
 
-% two possible architectures
-% (1) host frontend holds crossword ground truth
-% (2) backend holds crossword ground truth
-% leaning towards (2) since this allows set ssion pauses
-% we are flexible on these choices
+Another design decision that comes into play is when to fetch and if and how to store the crosswords from 
+the popular newspapers. An option is that we store all crosswords once and persist them into a central database. This would
+ensure that we only retrieve the crosswords from the newspaper once and provides backwards compatability and continued 
+usage of the application in the event that our method of retrieving crosswords breaks. Another option is to retrieve the
+crosswords on a request basis. The benefits of this is that there is no central netweork overhead on the implementation
+end, however this leads to polling a request to the crossword ingestion feed every time someone wants to load a crossword.
+Each of these might also lead to a different 'save and quit' data structures if we decide to implement server-side storage.
+
+If necessary, a final resort would be to generate our own crosswords or have a set list 
+instead of grabbing current ones from the newspapers. This is an unideal scenario, but it is a fallback plan just in
+case the data ingestion completely fails.
 
 \subsection{Deliverables}
 There are three concrete deliverables for the proposed project:
@@ -165,6 +177,7 @@ may prevent ample progess. However, in the case that we have extra time to work 
 goals that we would like to complete (in any order).
 \begin{itemize}
     \item Reinforcing scalability and testing extreme cases of collaborative editing (50+ users)
+    \item Additional settings and features, such as optional incorrect character detection or accessability settings
     \item Complete logging and system-wide evaluation of useful statistics such as response time over user load
     \item Extending the application to other single input entry games, such as Sudoku or Picross.
 \end{itemize}
