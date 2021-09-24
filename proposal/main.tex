@@ -63,9 +63,20 @@ slightly more familiar like React.
 
 \subsubsection{FastAPI}
 \label{fastapi}
+FastAPI \cite{fastapi} is a fast, easy, intuitive, and robust web framework written in Python. One of the authors
+has used it before, and found it quite nice.
 
 \subsubsection{Collaboration}
 \label{collabarch}
+
+The main design decision that goes into executing the collaboration feature of Crosshatch is \textit{where to
+  store the ground truth crossword}. It can either be stored on the client-side of whichever user is
+hosting the shared session, or it can be stored on the server-side in a simple database.
+
+In the first option (client-side storage), the backend implementation would be simpler since much less information
+would be flowing through it. However, the second option (server-side storage) leaves more room
+for stretch features, like the ability to ``save and quit'' a crossword to resume it later.
+Both options will be explored and researched in the first two weeks of the project timeline (see Section \ref{timeline}), and a definitive choice will be provided in the first follow-up.
 
 \subsubsection{Data Ingestion}
 \label{ingestarch}
@@ -92,6 +103,7 @@ There are three concrete deliverables for the proposed project:
 % source code % final report explaining final design and implementation % demo of working product
 
 \section{Timeline}
+\label{timeline}
 % research ways/architectures to connect clients together into a shared crossword session
 % research ways to ingest daily crosswords
 % implementation
