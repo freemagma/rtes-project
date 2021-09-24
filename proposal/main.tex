@@ -101,11 +101,10 @@ Both options will be explored and researched in the first two weeks of the proje
 \subsubsection{Data Ingestion and Management}
 \label{ingestarch}
 Ideally, users would be able to cooperatively work on crosswords from their favorite newspapers.
-Unfortunately, the ingestion of crosswords from popular newspapers is a non-trivial task. Initial
-research did not uncover any simple means, such as an API, that could be utilized to get the information in
-a universally digestable manner.  Newspaper websites often have a specific embedded `online game' that makes collecting
-the crossword data difficult or impossible, and there are off-brand sites that have the solutions and clues in a textual form,
-but the graph data is likely not accessible and scraping the images might be the only option.
+To this end, there is a website \url{crosswordfiend.com} which posts crosswords
+from several sources in the standard \texttt{.puz} format daily. There is also an archive online with \texttt{.puz}
+files for every NYT crossword from 1993 to mid-2021. These \texttt{.puz} files can be parsed (libraries to do so
+are readily available) and used in the Crosshatch application.
 Further options for data ingestion will be explored in the first two weeks of the project timeline
 (see Section \ref{timeline}).
 
@@ -116,10 +115,6 @@ usage of the application in the event that crossword retrieval breaks. Another o
 crosswords on a request basis. The benefit of this is that there would be no central storage overhead on the server-side; however, it would also lead to creating a request for crossword ingestion every time someone wants to load a crossword.
 Each of these options might also lead to different ``save and quit'' implementations if a server-side storage architecture
 is chosen.
-
-If necessary, a final resort would be to generate custom crosswords or have a set list
-instead of grabbing current ones from popular sources. This is an non-ideal scenario, but it is a fallback plan just in
-case the data ingestion efforts completely fail.
 
 \subsection{Deliverables}
 There are three concrete deliverables for the proposed project:
