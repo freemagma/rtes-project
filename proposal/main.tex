@@ -31,6 +31,25 @@ The ultimate aim of Crosshatch is to provide a crossword collaboration experienc
 % (paper newspaper does not scale to large amounts of people)
 \subsection{Related Work}
 % - paper on collaborative editing. mention how our case is simpler
+Crosshatch's core technological design relies on a specific piece real-time systems technology: collaborative editing. 
+Collaborative real-time editors are applications that enable seemingly instantaneous, simultaneous editing 
+of the same digital document by different users.
+Possibly the most popular of collaborative editing tools is Google Docs which is a collaborative
+word document tool similar to Microsoft Office Word.
+The complex problem that is creating a network structure to facilitate this type of application has been solved with centralized (Client/Server)
+and P2P models.
+Furthermore, different protocols, such as push-based or semi-synchronous, can be implemented based on the type of information being edited,
+network model constructed, and deadlines for edits to cascade through the network.
+Thankfully, our project is much more simple than collaboration on an Open Office XML (.docx) document; Crosshatch requires only 
+single character input at designated points with no formatting or large edits at once. 
+This allows us to experiment with the methods discussed above and switch designs 
+at relatively low stakes on user-facing application requirements. 
+
+https://dl.acm.org/doi/pdf/10.1145/2933057.2933090
+https://hal.inria.fr/file/index/docid/345911/filename/main.pdf
+https://dl.acm.org/doi/pdf/10.1145/1180875.1180916
+https://link.springer.com/chapter/10.1007/978-94-011-2094-4\_15
+https://www.google.com/docs/about/
 
 \section{Proposed Work}
 Expanding on the overarching vision expressed in Section \ref{mot}, the aim of the Crosshatch web application is to provide the following
