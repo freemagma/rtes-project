@@ -35,23 +35,16 @@ The ultimate aim of Crosshatch is to provide a crossword collaboration experienc
 Crosshatch's core technological design relies on a specific piece of real-time systems technology: collaborative editing.
 Collaborative real-time editors are applications that enable seemingly instantaneous, simultaneous editing 
 of the same digital document by different users.
-Possibly the most popular of collaborative editing tools is Google Docs, a collaborative
+Possibly the most popular of collaborative editing tools is Google Docs \ref{googledocs}, a collaborative
 word document tool similar to Microsoft Office Word.
 The complex problem of creating a network structure to facilitate this type of application has been solved with centralized (Client/Server)
-and P2P models.
-Furthermore, different protocols, such as push-based or semi-synchronous, can be implemented based on the type of information being edited,
+and P2P models \ref{p2p} \ref{p2p2}.
+Furthermore, different protocols, such as push-based \ref{pushbased} or semi-synchronous \ref{semisynchronous}, can be implemented based on the type of information being edited,
 network model constructed, and deadlines for edits to cascade through the network.
-Thankfully, our project is much simpler than collaboration on an Open Office XML (.docx) document; Crosshatch requires only
+Thankfully, Crosshatch is much simpler than collaboration on an Open Office XML (.docx) document; Crosshatch requires only
 single character input at designated points with no formatting or large edits at once. 
-This allows us to experiment with the methods discussed above and switch designs 
+This allows for ample experimentation with the methods discussed above and the ability to switch designs 
 at relatively low stakes on user-facing application requirements. 
-
-\noindent
-\url{https://dl.acm.org/doi/pdf/10.1145/2933057.2933090} \\
-\url{https://hal.inria.fr/file/index/docid/345911/filename/main.pdf} \\
-\url{https://dl.acm.org/doi/pdf/10.1145/1180875.1180916} \\
-\url{https://link.springer.com/chapter/10.1007/978-94-011-2094-4\_15} \\
-\url{https://www.google.com/docs/about/}
 
 \section{Proposed Work}
 Expanding on the overarching vision expressed in Section \ref{mot}, the aim of the Crosshatch web application is to provide the following
@@ -107,22 +100,22 @@ Both options will be explored and researched in the first two weeks of the proje
 
 \subsubsection{Data Ingestion}
 \label{ingestarch}
-Ideally we would want users to be able to cooperatively work on crosswords from their favorite newspapers.
-Unfortunately, the ingestion of crosswords from popular newspapers is likely the task that has the most complexity. In our initial
-research, we did not find any simple programmatical means, such as an API, that we can utilize to get the information in
+Ideally, Crosshatch should allow users to be able to cooperatively work on crosswords from their favorite newspapers.
+Unfortunately, the ingestion of crosswords from popular newspapers is likely the task that has the most complexity. In initial
+research, there was no trace of any simple programmatical means, such as an API, that Crosshatch can utilize to get the information in
 a universally digestable manner.  Most newspapers often have a specific embedded 'online game' that makes collecting
 the crossword data difficult or impossible. There are off-brand sites that have the solutions and clues in a textual form,
 but the graph data is likely not accessible and we would need to scrape the website for any information.
 
 Another design decision that comes into play is when to fetch and if and how to store the crosswords from 
-the popular newspapers. An option is that we store all crosswords once and persist them into a central database. This would
-ensure that we only retrieve the crosswords from the newspaper once and provides backwards compatability and continued 
-usage of the application in the event that our method of retrieving crosswords breaks. Another option is to retrieve the
-crosswords on a request basis. The benefits of this is that there is no central netweork overhead on the implementation
-end, however this leads to polling a request to the crossword ingestion feed every time someone wants to load a crossword.
-Each of these might also lead to a different 'save and quit' data structures if we decide to implement server-side storage.
+the popular newspapers. An option is that the application stores all crosswords once and persist them into a central database. This would
+ensure that Crosshatch only retrieves the crosswords from the newspaper once, and it provides backwards compatability and continued 
+usage of the application in the event that the method of retrieving crosswords breaks. Another option is to retrieve the
+crosswords on a request basis. The benefits of this is that there is no central network overhead on the implementation
+end, however this leads to polling a request to the crossword ingestion feed every time a user wants to load a crossword.
+Each of these might also lead to a different 'save and quit' data structures if server-side storage is implemented.
 
-If necessary, a final resort would be to generate our own crosswords or have a set list 
+If necessary, a final resort would be to generate crosswords or have a set list 
 instead of grabbing current ones from the newspapers. This is an unideal scenario, but it is a fallback plan just in
 case the data ingestion completely fails.
 
@@ -172,9 +165,9 @@ There are three concrete deliverables for the proposed project:
 \subsection{Stretch Goals and Future Work}
 % - expand to sudoku
 % - ...
-Our 9 week plan leaves room for design switches and experimentation, disasterous bugfixes, and sudden life events that
-may prevent ample progess. However, in the case that we have extra time to work on our project, we have created stretch
-goals that we would like to complete (in any order).
+The 9 week plan leaves room for design switches and experimentation, disasterous bugfixes, and sudden life events that
+may prevent ample progess. However, in the case that there is extra time to work on the project, below are stretch goals
+provided that have been noted as interesting extensions to Crosshatch (in any order).
 \begin{itemize}
     \item Reinforcing scalability and testing extreme cases of collaborative editing (50+ users)
     \item Additional settings and features, such as optional incorrect character detection or accessability settings
@@ -182,7 +175,7 @@ goals that we would like to complete (in any order).
     \item Extending the application to other single input entry games, such as Sudoku or Picross.
 \end{itemize}
 
-Furthermore, we aim to document our project and release it open-source so other may utilize our techniques and findings.
+Furthermore, the aim is to document our project and release it open-source so others may utilize our techniques and findings.
 
 \newpage
 \bibliography{sources.bib}
