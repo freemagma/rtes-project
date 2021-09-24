@@ -15,7 +15,7 @@
 When doing a crossword puzzle from a physical newspaper, it is easy for a few people to gather around and work on solving it together.
 This is because all of the clues are visible at once, so each person can scan around for clues they know the answer to. However, this technique
 for crossword collaboration does not extend well into the digital world. Most major websites that host interactive crosswords only show a small subset of
-clues (e.g. The LA Times \cite{latcrossword}) at a time, forcing all collaborators to focus on the same small portion of the clues. In the authors' personal experience,
+clues at a time (e.g. The LA Times \cite{latcrossword}), forcing all collaborators to focus on the same small portion of the clues. In the authors' personal experience,
 this is an inferior way to collaborate on a crossword: a lot of the fun of joint crosswords is rapidly going back and forth in different areas
 of the grid, calling out newly discovered answers.
 
@@ -41,9 +41,9 @@ The complex problem of creating a network structure to facilitate this type of a
 and P2P models \cite{p2p} \cite{p2p2}.
 Furthermore, different protocols, such as push-based \cite{pushbased} or semi-synchronous \cite{semisynchronous}, can be implemented based on the type of information being edited,
 network model constructed, and deadlines for edits to cascade through the network.
-Thankfully, Crosshatch is much simpler than collaboration on an Open Office XML (.docx) document; Crosshatch requires only
-single character input at designated points with no formatting or large edits at once. 
-This allows experimentation with the methods discussed above and switch designs
+Thankfully, Crosshatch is much simpler than collaboration on an Open Office XML (.docx) document; it requires only
+single character inputs at designated points with no formatting or large edits.
+This allows experimentation with the methods discussed above and design switching
 at relatively low stakes on user-facing application requirements.
 
 \section{Proposed Work}
@@ -51,7 +51,7 @@ Expanding on the overarching vision expressed in Section \ref{mot}, the aim of t
 specific features:
 \begin{itemize}
   \item A convenient UI for interacting with and solving a crossword puzzle in a web browser
-  \item The ability for multiple people (at least three) to interact with the same crossword puzzle at the same time from different devices
+  \item The ability for multiple people (at least two) to interact with the same crossword puzzle at the same time from different devices
   \item Daily crossword ingestion from at least one popular free source (LA Times, Wall Street Journal, USA Today, etc.)
 \end{itemize}
 
@@ -98,28 +98,28 @@ would be flowing through it. However, the second option (server-side storage) le
 for stretch features, like the ability to ``save and quit'' a crossword to resume it later.
 Both options will be explored and researched in the first two weeks of the project timeline (see Section \ref{timeline}), and a definitive choice will be provided in the first follow-up.
 
-\subsubsection{Data Ingestion}
+\subsubsection{Data Ingestion and Management}
 \label{ingestarch}
 Ideally, users would be able to cooperatively work on crosswords from their favorite newspapers.
-Unfortunately, the ingestion of crosswords from popular newspapers is likely the task that has the most complexity. Initial
+Unfortunately, the ingestion of crosswords from popular newspapers is a non-trivial task. Initial
 research did not uncover any simple means, such as an API, that could be utilized to get the information in
 a universally digestable manner.  Newspaper websites often have a specific embedded `online game' that makes collecting
-the crossword data difficult or impossible. There are off-brand sites that have the solutions and clues in a textual form,
-but the graph data is likely not accessible and scraping the data would be the only option.
+the crossword data difficult or impossible, and there are off-brand sites that have the solutions and clues in a textual form,
+but the graph data is likely not accessible and scraping the images might be the only option.
 Further options for data ingestion will be explored in the first two weeks of the project timeline
 (see Section \ref{timeline}).
 
 Another design decision that comes into play is when, if, and how to fetch and store the crosswords from
-the popular newspapers. An option is to store all crosswords once and persist them into a central database. This would
-ensure that crosswords are only retrieved once from each source and would provide backwards compatability and continued
+their sources. One option is to store all crosswords once and persist them into a central database. This would
+ensure that crosswords are only retrieved a single time from each source and would allow continued
 usage of the application in the event that crossword retrieval breaks. Another option is to retrieve the
 crosswords on a request basis. The benefit of this is that there would be no central storage overhead on the server-side; however, it would also lead to creating a request for crossword ingestion every time someone wants to load a crossword.
-Each of these options might also lead to a different `save and quit' implementations if a server-side storage architecture
+Each of these options might also lead to different ``save and quit'' implementations if a server-side storage architecture
 is chosen.
 
 If necessary, a final resort would be to generate custom crosswords or have a set list
-instead of grabbing current ones from the newspapers. This is an non-ideal scenario, but it is a fallback plan just in
-case the data ingestion completely fails.
+instead of grabbing current ones from popular sources. This is an non-ideal scenario, but it is a fallback plan just in
+case the data ingestion efforts completely fail.
 
 \subsection{Deliverables}
 There are three concrete deliverables for the proposed project:
@@ -148,17 +148,17 @@ There are three concrete deliverables for the proposed project:
   \begin{tabular}{| c | p{0.9\linewidth} |}
     \hline
     \textbf{Week} & \textbf{Task} \\ \hline
-    09-26 & Research and experimentation with methods to connect
+    09-26 & Research and experimentat with methods of connecting
             clients into a shared crossword session \\ \hline
-    10-03 & Further research of above and the ability to
+    10-03 & Research the ability to
             ingest daily crosswords from popular sources \\ \hline
     10-10 & Establish foundational source code and UI \\ \hline
     10-17 & Continue to establish foundational source code and UI \\ \hline
-    10-24 & Set up crossword ingestion into the application \\ \hline
+    10-24 & Incorporate crossword ingestion into the application \\ \hline
     10-31 & Create working connections between clients and any
-            necessary application entities (e.g., the ground truth crossword) \\ \hline
+            necessary application entities (e.g. the ground truth crossword) \\ \hline
     11-07 & Test and evaluate different methods of rectifying conflicting edits  \\ \hline
-    11-14 & Investigate scalability of collaboration (i.e. 5+ people working on one crossword) \\ \hline
+    11-14 & Investigate scalability of collaboration (i.e. 3+ people working on one crossword) \\ \hline
     11-21 & Finalize source code and perform bugfixes \\ \hline
     11-28 & Create presentation, demonstration, and final report \\ \hline
 
@@ -169,8 +169,8 @@ There are three concrete deliverables for the proposed project:
 % - expand to sudoku
 % - ...
 The timeline leaves room for design switches and experimentation, disastrous bugfixes, and sudden life events that
-may prevent ample progess. However, in the case that there is extra time at the end of the semester, here are some stretch
-goals that would be interesting to complete or try.
+may prevent progess. However, in the case that there is extra time at the end of the semester, here are some stretch
+goals that would be interesting to complete or try:
 \begin{itemize}
     \item Reinforcing scalability and testing extreme cases of collaborative editing (50+ users)
     \item Additional settings and features, such as optional incorrect character detection or accessability settings
