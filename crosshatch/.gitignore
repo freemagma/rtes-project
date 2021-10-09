@@ -1,1 +1,5 @@
 .direnv
+__pycache__
+node_modules
+
+crosshatch/package-lock.json

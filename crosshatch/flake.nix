@@ -4,6 +4,6 @@
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       with nixpkgs.legacyPackages.${system}; {
-        devShell = mkShell { buildInputs = [ docker-compose ]; };
+        devShell = mkShell { buildInputs = [ docker-compose nodejs ]; };
       });
 }
