@@ -8,4 +8,6 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = "http://localhost:5000/";
 
-createApp(App).use(router).mount("#app");
+const app = createApp(App);
+app.use(router);
+app.mount("#app");
