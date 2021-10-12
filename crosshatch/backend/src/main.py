@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.responses import RedirectResponse
-
+from fastapi.responses import RedirectResponse
+import sys; print(sys.path)
+from .models.crossword import Crossword
+ 
 import socketio
 import uuid
 from urllib.parse import parse_qs
@@ -26,6 +28,13 @@ sio_app = socketio.ASGIApp(sio)
 user_list = []
 rooms = {}
 
+# temporary
+puz_list = [
+    Crossword("abcd", "WSJ 10/09/2021", "wsj211009"),
+    Crossword("efgh", "WSJ 10/11/2021", "wsj211011"),
+    Crossword("zxyz", "WSJ 10/12/2021", "wsj211012")
+    ]
+
 
 @sio.event
 async def connect(sid, environ, auth):
@@ -48,6 +57,10 @@ async def disconnect(sid):
 def home():
     return "Hello, World!"
 
+@app.get("/puzzles")
+def get_puzzles():
+    # TODO only return the necessary information we want to display
+    return puz_list
 
 @app.get("/play/create/{puzzle_id}")
 def create_room():
