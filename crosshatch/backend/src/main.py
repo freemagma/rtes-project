@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.responses import RedirectResponse
 
 import socketio
+import uuid
+from urllib.parse import parse_qs
 
 app = FastAPI()
 
@@ -21,11 +24,14 @@ sio_app = socketio.ASGIApp(sio)
 
 
 user_list = []
+rooms = {}
 
 
 @sio.event
 async def connect(sid, environ, auth):
-    print(f"connected to {sid}")
+    query_string = environ["QUERY_STRING"]
+    room = parse_qs(query_string)["room"][0]
+    print(f"connected to {sid} in {room}")
     user_list.append(sid)
     await sio.emit("updateUserList", user_list)
 
@@ -41,6 +47,14 @@ async def disconnect(sid):
 @app.get("/")
 def home():
     return "Hello, World!"
+
+
+@app.get("/play/create/{puzzle_id}")
+def create_room():
+    room_id = str(uuid.uuid1())
+    rooms[room_id] = puzzle_id
+    response = RedirectResponse(url=f"/play/room/{room_id}")
+    return response
 
 
 # Mount SocketIO

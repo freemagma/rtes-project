@@ -14,7 +14,7 @@ export default {
     return {
       greeting: "undefined",
       userList: [],
-      socket: io("ws://localhost:5000"),
+      socket: io("ws://localhost:5000", { query: { room: "hello" } }),
     };
   },
   computed: {
