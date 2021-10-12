@@ -25,7 +25,6 @@ user_list = []
 
 @sio.event
 async def connect(sid, environ, auth):
-    global user_list
     print(f"connected to {sid}")
     user_list.append(sid)
     await sio.emit("updateUserList", user_list)
@@ -33,7 +32,6 @@ async def connect(sid, environ, auth):
 
 @sio.event
 async def disconnect(sid):
-    global user_list
     print(f"disconnected from {sid}")
     user_list.remove(sid)
     await sio.emit("updateUserList", user_list)
