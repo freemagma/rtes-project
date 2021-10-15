@@ -63,10 +63,10 @@ def get_puzzles():
     return puz_list
 
 @app.get("/play/create/{puzzle_id}")
-def create_room():
+def create_room(puzzle_id):
     room_id = str(uuid.uuid1())
     rooms[room_id] = puzzle_id
-    response = RedirectResponse(url=f"/play/room/{room_id}")
+    response = f"/play/room/{room_id}"
     return response
 
 

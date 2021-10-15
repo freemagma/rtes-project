@@ -5,9 +5,9 @@
         <div class="col-8">
             <ul class="list-group">
                 <li v-for="crossword in crosswords" :key="crossword.id" class="list-group-item">
-                    <a :href="'/play/create/' + crossword.id">
+                    <div @click="createRoom(crossword.id)">
                         {{ crossword.name }}
-                    </a>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -29,6 +29,15 @@ export default {
     axios
       .get('/puzzles')
       .then(response => (this.crosswords = response.data))
+    },
+    methods: {
+        createRoom(puzzleId) {
+            axios
+              .get('/play/create/' + puzzleId)
+              .then(response => {
+                  window.location.href = response.data;
+              })
+        }
     }
 }
 </script>
