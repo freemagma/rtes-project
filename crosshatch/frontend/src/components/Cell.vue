@@ -22,7 +22,7 @@ export default {
     relevantClues: Object,
     focused: Boolean,
   },
-  emits: ["update:letter", "click:input"],
+  emits: ["keydown:input", "click:input"],
   computed: {
     isBlank() {
       return this.letter == "#";
@@ -46,9 +46,7 @@ export default {
   methods: {
     keydown(event) {
       event.preventDefault();
-      if (/^[a-zA-Z]$/.test(event.key)) {
-        this.$emit("update:letter", event.key.toUpperCase());
-      }
+      this.$emit("keydown:input", event);
     },
     focusInput() {
       this.$refs.input.focus();
