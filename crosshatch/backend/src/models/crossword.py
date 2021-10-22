@@ -1,11 +1,8 @@
-class Crossword():
-    def __init__(self, id, name, puz_filename):
+class Crossword:
+    def __init__(self, id, name, filename):
         self.id = id
         self.name = name
-        self.puz_filename = puz_filename
+        self.filename = filename
 
     def asdict(self):
-        return {
-            'name': self.name,
-            'puz_filename': self.puz_filename
-        }
+        return {"name": self.name, "filename": self.filename}
