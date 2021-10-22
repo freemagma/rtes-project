@@ -1,19 +1,24 @@
 <template>
-  <table>
-    <tr v-for="(row, r) of grid" :key="r">
-      <td v-for="(cell, c) of row" :key="(r, c)">
-        <Cell
-          :letter="grid[r][c]"
-          :currentClue="currentClue"
-          :relevantClues="clue_grid[r][c]"
-          :focused="focus.r == r && focus.c == c"
-          @keydown:input="keydown($event)"
-          @click:input="clickEvent(r, c)"
-          :ref="(el) => setCellRef(el, r, c)"
-        />
-      </td>
-    </tr>
-  </table>
+  <div>
+    <table>
+      <tr v-for="(row, r) of grid" :key="r">
+        <td v-for="(cell, c) of row" :key="(r, c)">
+          <Cell
+            :letter="grid[r][c]"
+            :currentClue="currentClue"
+            :relevantClues="clue_grid[r][c]"
+            :focused="focus.r == r && focus.c == c"
+            @keydown:input="keydown($event)"
+            @click:input="clickEvent(r, c)"
+            :ref="(el) => setCellRef(el, r, c)"
+          />
+        </td>
+      </tr>
+    </table>
+    <div class="clue">
+      <h3>{{ currentClueText }}</h3>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -43,6 +48,12 @@ export default {
         direction: this.direction,
       };
     },
+    currentClueText() {
+      if (this.clue_grid === null) return "";
+      let letter = this.direction.charAt(0).toUpperCase();
+      let clue = this.clues[this.currentClue.num][this.direction];
+      return `${this.currentClue.num}${letter}: ${clue}`;
+    },
   },
   methods: {
     crosswordInit(data) {
@@ -61,49 +72,107 @@ export default {
         (97 <= keycode && keycode <= 122)
       ) {
         // input was a letter
-        console.log(keycode);
         this.grid[this.focus.r][this.focus.c] = event.key.toUpperCase();
-        this.cycleFocus(true, false);
+        this.cycleFocus();
       } else if (keycode == 8) {
         // BACKSPACE removes current letter if present
         // otherwise, it moves the focus one backwards then removes
         if (this.grid[this.focus.r][this.focus.c] == "")
-          this.cycleFocus(false, false);
+          this.cycleFocus({ backwards: true });
         this.grid[this.focus.r][this.focus.c] = "";
       } else if (keycode == 46) {
         // DEL removes the current letter
         this.grid[this.focus.r][this.focus.c] = "";
       } else if (keycode == 32) {
         // SPACE swaps directions
-        this.swapDirections();
+        this.direction = this.opposite(this.direction);
       } else if (keycode == 9) {
         // TAB moves forward or backward to a new clue
         // based on whether shift is pressed
-        this.cycleFocus(!event.shiftKey, true);
+        this.cycleFocus({ backwards: event.shiftKey, force_cycle_clue: true });
+      } else if (37 <= keycode && keycode <= 40) {
+        // ARROW keys switch direction and move among row/col
+        if ((keycode % 2 ? "across" : "down") != this.direction) {
+          this.direction = this.opposite(this.direction);
+        } else {
+          const delta = keycode <= 38 ? -1 : 1;
+          let new_r = this.focus.r;
+          let new_c = this.focus.c;
+          do {
+            new_r += delta * (this.direction == "down");
+            new_c += delta * (this.direction == "across");
+            if (this.whiteCell(new_r, new_c)) {
+              this.updateFocus(new_r, new_c);
+              break;
+            }
+          } while (this.inBounds(new_r, new_c));
+        }
       }
     },
-    cycleFocus(forward, next_clue) {
-      let delta = forward ? 1 : -1;
-      let new_r =
-        this.direction == "across" ? this.focus.r : this.focus.r + delta;
-      let new_c =
-        this.direction == "across" ? this.focus.c + delta : this.focus.c;
-      if (next_clue || !this.freeSquare(new_r, new_c)) {
-        let clue_num = this.currentClue.num;
-        do {
-          clue_num += delta;
-          if (clue_num == this.clues.length) {
-            clue_num = 1;
-            this.swapDirections();
-          } else if (clue_num == 0) {
-            clue_num = this.clues.length - 1;
-            this.swapDirections();
+    cycleFocus({
+      backwards = false,
+      cycle_clue = true,
+      cycle_in_word = true,
+      force_cycle_clue = false,
+    } = {}) {
+      const delta = backwards ? -1 : 1;
+      let new_clue = this.currentClue.num;
+      let new_dir = this.direction;
+      let new_r = this.focus.r;
+      let new_c = this.focus.c;
+
+      const incrementCell = (delta) => {
+        new_r += delta * (new_dir == "down");
+        new_c += delta * (new_dir == "across");
+      };
+      const advanceCell = (delta) => {
+        while (this.whiteCell(new_r, new_c) && !this.freeCell(new_r, new_c)) {
+          incrementCell(delta);
+        }
+      };
+      const resetInWord = () => {
+        new_r = this.clues[new_clue].start_r;
+        new_c = this.clues[new_clue].start_c;
+      };
+      const incrementClue = (delta) => {
+        new_clue += delta;
+        if (new_clue == 0 || new_clue == this.clues.length) {
+          new_clue += -1 * delta * (this.clues.length - 1);
+          new_dir = this.opposite(new_dir);
+        }
+        resetInWord();
+      };
+      const advanceClue = (delta) => {
+        let start_dir = new_dir;
+        let start_clue = new_clue;
+        advanceCell(1);
+        while (!this.freeCell(new_r, new_c)) {
+          incrementClue(delta);
+          if (new_dir == start_dir && new_clue == start_clue) {
+            return;
           }
-        } while (!(this.direction in this.clues[clue_num]));
-        new_r = this.clues[clue_num].start_r;
-        new_c = this.clues[clue_num].start_c;
+          advanceCell(1);
+        }
+      };
+
+      if (force_cycle_clue) {
+        incrementClue(delta);
+        advanceClue(delta);
+      } else {
+        advanceCell(delta);
+        if (cycle_in_word && !this.whiteCell(new_r, new_c)) {
+          resetInWord();
+          advanceCell(1);
+        }
+        if (cycle_clue && !this.whiteCell(new_r, new_c)) {
+          advanceClue(delta);
+        }
       }
-      this.updateFocus(new_r, new_c);
+
+      if (force_cycle_clue || this.freeCell(new_r, new_c)) {
+        this.direction = new_dir;
+        this.updateFocus(new_r, new_c);
+      }
     },
     updateFocus(r, c) {
       this.focus.r = r;
@@ -114,8 +183,9 @@ export default {
       }
     },
     clickEvent(r, c) {
-      if (this.focus.r == r && this.focus.c == c) this.swapDirections();
-      else {
+      if (this.focus.r == r && this.focus.c == c) {
+        this.direction = this.opposite(this.direction);
+      } else {
         this.focus.r = r;
         this.focus.c = c;
       }
@@ -126,12 +196,17 @@ export default {
     setCellRef(el, r, c) {
       this.cellRefs[this.cellRefKey(r, c)] = el;
     },
-    freeSquare(r, c) {
-      if (r < 0 || r >= this.height || c < 0 || c >= this.width) return false;
-      return this.grid[r][c] != "#";
+    inBounds(r, c) {
+      return !(r < 0 || r >= this.height || c < 0 || c >= this.width);
     },
-    swapDirections() {
-      this.direction = this.direction == "across" ? "down" : "across";
+    whiteCell(r, c) {
+      return this.inBounds(r, c) && this.grid[r][c] != "#";
+    },
+    freeCell(r, c) {
+      return this.inBounds(r, c) && this.grid[r][c] == "";
+    },
+    opposite(direction) {
+      return direction == "across" ? "down" : "across";
     },
   },
 };
@@ -142,5 +217,8 @@ table {
   background-color: black;
   border: 1px solid black;
   font-size: 20px;
+}
+.clue {
+  padding: 30px;
 }
 </style>

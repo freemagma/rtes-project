@@ -4,7 +4,7 @@
       :value="displayLetter"
       @keydown="keydown($event)"
       @click="$emit('click:input')"
-      :disabled="isBlank"
+      :disabled="isBlack"
       :class="classes"
       type="text"
       size="1"
@@ -24,7 +24,7 @@ export default {
   },
   emits: ["keydown:input", "click:input"],
   computed: {
-    isBlank() {
+    isBlack() {
       return this.letter == "#";
     },
     classes() {
@@ -35,7 +35,7 @@ export default {
           this.relevantClues[this.currentClue.direction] ==
             this.currentClue.num,
         focus: this.focused,
-        blank: this.isBlank,
+        black: this.isBlack,
       };
     },
     displayLetter() {
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style>
-.blank {
+.black {
   background-color: black;
   color: black;
 }
