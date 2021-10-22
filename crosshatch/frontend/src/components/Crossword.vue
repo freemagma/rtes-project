@@ -78,7 +78,11 @@ export default {
         // BACKSPACE removes current letter if present
         // otherwise, it moves the focus one backwards then removes
         if (this.grid[this.focus.r][this.focus.c] == "")
-          this.cycleFocus({ backwards: true });
+          this.cycleFocus({
+            backwards: true,
+            cycle_in_word: false,
+            pred: (r, c) => r || c || true,
+          });
         this.grid[this.focus.r][this.focus.c] = "";
       } else if (keycode == 46) {
         // DEL removes the current letter
@@ -114,62 +118,83 @@ export default {
       cycle_clue = true,
       cycle_in_word = true,
       force_cycle_clue = false,
+      pred = (r, c) => this.freeCell(r, c),
     } = {}) {
       const delta = backwards ? -1 : 1;
-      let new_clue = this.currentClue.num;
-      let new_dir = this.direction;
-      let new_r = this.focus.r;
-      let new_c = this.focus.c;
+      var new_clue, new_dir, new_r, new_c;
 
+      const resetPosition = () => {
+        new_clue = this.currentClue.num;
+        new_dir = this.direction;
+        new_r = this.focus.r;
+        new_c = this.focus.c;
+      };
       const incrementCell = (delta) => {
         new_r += delta * (new_dir == "down");
         new_c += delta * (new_dir == "across");
       };
-      const advanceCell = (delta) => {
-        while (this.whiteCell(new_r, new_c) && !this.freeCell(new_r, new_c)) {
-          incrementCell(delta);
-        }
-      };
-      const resetInWord = () => {
+      const resetInWord = (delta) => {
         new_r = this.clues[new_clue].start_r;
         new_c = this.clues[new_clue].start_c;
+        if (delta == -1) {
+          while (this.whiteCell(new_r, new_c)) {
+            incrementCell(1);
+          }
+          incrementCell(-1);
+        }
       };
       const incrementClue = (delta) => {
-        new_clue += delta;
-        if (new_clue == 0 || new_clue == this.clues.length) {
-          new_clue += -1 * delta * (this.clues.length - 1);
-          new_dir = this.opposite(new_dir);
-        }
-        resetInWord();
+        do {
+          new_clue += delta;
+          if (new_clue == 0 || new_clue == this.clues.length) {
+            new_clue += -1 * delta * (this.clues.length - 1);
+            new_dir = this.opposite(new_dir);
+          }
+        } while (!(new_dir in this.clues[new_clue]));
+        resetInWord(delta);
       };
-      const advanceClue = (delta) => {
-        let start_dir = new_dir;
-        let start_clue = new_clue;
-        advanceCell(1);
-        while (!this.freeCell(new_r, new_c)) {
+      const smartIncrementCell = (delta) => {
+        incrementCell(delta);
+        if (!this.whiteCell(new_r, new_c)) {
           incrementClue(delta);
-          if (new_dir == start_dir && new_clue == start_clue) {
+        }
+      };
+      const advance = (increment, arg, pred) => {
+        const start_r = new_r;
+        const start_c = new_c;
+        const start_dir = new_dir;
+        while (!pred(new_r, new_c)) {
+          increment(arg);
+          if (new_r == start_r && new_c == start_c && new_dir == start_dir) {
             return;
           }
-          advanceCell(1);
         }
       };
+      const haltPred = (r, c) => pred(r, c) || !this.whiteCell(r, c);
 
+      resetPosition();
       if (force_cycle_clue) {
         incrementClue(delta);
-        advanceClue(delta);
+        advance(smartIncrementCell, delta, pred);
+        resetInWord(1);
       } else {
-        advanceCell(delta);
+        incrementCell(delta);
+        advance(incrementCell, delta, haltPred);
         if (cycle_in_word && !this.whiteCell(new_r, new_c)) {
-          resetInWord();
-          advanceCell(1);
+          resetInWord(delta);
+          advance(incrementCell, delta, haltPred);
         }
         if (cycle_clue && !this.whiteCell(new_r, new_c)) {
-          advanceClue(delta);
+          resetPosition();
+          smartIncrementCell(delta);
+          advance(smartIncrementCell, delta, pred);
         }
       }
 
-      if (force_cycle_clue || this.freeCell(new_r, new_c)) {
+      if (
+        this.whiteCell(new_r, new_c) &&
+        (force_cycle_clue || pred(new_r, new_c))
+      ) {
         this.direction = new_dir;
         this.updateFocus(new_r, new_c);
       }
