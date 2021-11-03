@@ -34,6 +34,10 @@ crosswords_metadata = [ { "id": crossword, "name": Crossword.get_title_from_file
 
 room_data = {}
 
+@sio.on("crosswordEdit")
+async def update_crossword(sid, data):
+    print(data)
+
 # Routes
 @app.get("/")
 def home():

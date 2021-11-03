@@ -75,6 +75,7 @@ export default {
         // input was a letter
         this.grid[this.focus.r][this.focus.c] = event.key.toUpperCase();
         cycleFocus(this);
+        this.emitEdit(this.focus.r, this.focus.c, event.key.toUpperCase());
       } else if (keycode == 8) {
         // BACKSPACE removes current letter if present
         // otherwise, it moves the focus one backwards then removes
@@ -85,9 +86,11 @@ export default {
             skip_unfree: false,
           });
         this.grid[this.focus.r][this.focus.c] = "";
+        this.emitEdit(this.focus.r, this.focus.c, "");
       } else if (keycode == 46) {
         // DEL removes the current letter
         this.grid[this.focus.r][this.focus.c] = "";
+        this.emitEdit(this.focus.r, this.focus.c, "");
       } else if (keycode == 32) {
         // SPACE swaps directions
         this.direction = this.opposite(this.direction);
@@ -125,6 +128,9 @@ export default {
         this.cellRefs[cellRefKey].focusInput();
       }
     },
+    emitEdit(row, column, character) {
+      this.$emit('crosswordEdit', {row: row, column: column, character: character});
+    },
     clickEvent(r, c) {
       if (this.focus.r == r && this.focus.c == c) {
         this.direction = this.opposite(this.direction);
@@ -132,6 +138,9 @@ export default {
         this.focus.r = r;
         this.focus.c = c;
       }
+    },
+    setCellCharacter(r, c, char) {
+        this.grid[r][c] = char;
     },
     cellRefKey(r, c) {
       return `${r}:${c}`;

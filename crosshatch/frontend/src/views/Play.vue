@@ -1,6 +1,6 @@
 <template>
   <div class="play">
-    <Crossword ref="crossword" />
+    <Crossword ref="crossword" @crossword-edit="sendCrosswordEditEvent" />
   </div>
 </template>
 
@@ -24,7 +24,16 @@ export default {
     this.socket.on("crosswordInit", (data) => {
       this.$refs.crossword.crosswordInit(data);
     });
+    this.socket.on("crosswordUpdate", (data) => {
+      console.log(data)
+      //this.$refs.crossword.setCellCharacter(data.row, column, c)
+    });
   },
+  methods: {
+    sendCrosswordEditEvent(data) {
+      this.socket.emit("crosswordEdit", data);
+    },
+  }
 };
 </script>
 
