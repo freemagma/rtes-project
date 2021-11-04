@@ -1,5 +1,8 @@
 fastapi==0.68.0
 uvicorn==0.14.0
-websockets==10.0
 python-socketio==5.4.0
 puzpy==0.2.5
+beautifulsoup4==4.10.0
+requests==2.26.0
+requests-html==0.10.0
+websockets==8.1
