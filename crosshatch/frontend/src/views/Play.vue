@@ -25,8 +25,7 @@ export default {
       this.$refs.crossword.crosswordInit(data);
     });
     this.socket.on("crosswordUpdate", (data) => {
-      console.log(data)
-      //this.$refs.crossword.setCellCharacter(data.row, column, c)
+      this.$refs.crossword.setCellCharacter(data.row, data.column, data.character)
     });
   },
   methods: {

@@ -34,10 +34,6 @@ crosswords_metadata = [ { "id": crossword, "name": Crossword.get_title_from_file
 
 room_data = {}
 
-@sio.on("crosswordEdit")
-async def update_crossword(sid, data):
-    print(data)
-
 # Routes
 @app.get("/")
 def home():
@@ -46,7 +42,6 @@ def home():
 @app.get("/puzzles")
 def get_puzzles():
     # TODO this is bad
-    print(crosswords_metadata)
     return crosswords_metadata
 
 # TODO puzzle_id is just the filename for now, we need to change this in the future when we add metadata to the filename
@@ -59,7 +54,7 @@ def create_room(puzzle_id):
 
 # Socket Events
 @sio.event
-async def connect(sid, environ, auth):
+async def connect(sid, environ):
     query_string = environ["QUERY_STRING"]
     room = parse_qs(query_string)["room"][0]
     sio.enter_room(sid, room)
@@ -68,6 +63,14 @@ async def connect(sid, environ, auth):
 @sio.event
 async def disconnect(sid):
     pass
+
+@sio.on("crosswordEdit")
+async def update_crossword(sid, data):
+    room_path, row, column, character = data.values()
+    crossword = room_data[room_path]
+    crossword.set_grid_cell(row, column, character)
+    # TODO Only send message to everyone in room but creator (or the creator just discards the event)
+    await sio.emit("crosswordUpdate", data, room=room_path)
 
 # Mount SocketIO
 app.mount("/", sio_app)

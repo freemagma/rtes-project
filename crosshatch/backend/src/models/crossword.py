@@ -16,7 +16,6 @@ class Crossword:
     def get_title_from_filename(filename):
         puzzle = puz.read(f"src/resources/{filename}.puz")
         title = f"{puzzle.title}  {puzzle.copyright}"
-        print("TITLE: ", title)
         return title
 
     def __init__(self, filename, room_id):
@@ -100,3 +99,6 @@ class Crossword:
             "clue_grid": self.clue_grid,
         }
         return data
+
+    def set_grid_cell(self, row, column, character):
+        self.grid[row][column] = character
