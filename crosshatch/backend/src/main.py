@@ -6,6 +6,7 @@ from .models.crossword import Crossword
 
 import socketio
 import uuid
+import os
 from urllib.parse import parse_qs
 
 app = FastAPI()
@@ -24,14 +25,6 @@ app.add_middleware(
 sio = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins=[])
 sio_app = socketio.ASGIApp(sio)
 
-# temporary, eventually load from database
-crosswords = [
-    "wsj211009",
-    "wsj211011",
-    "wsj211012",
-]
-crosswords_metadata = [ { "id": crossword, "name": Crossword.get_title_from_filename(crossword) } for crossword in crosswords ]
-
 room_data = {}
 
 # Routes
@@ -39,18 +32,25 @@ room_data = {}
 def home():
     return "Hello, World!"
 
+
 @app.get("/puzzles")
 def get_puzzles():
     # TODO this is bad
-    return crosswords_metadata
+    # eventually load from database
+    return [
+        {"id": filename, "name": Crossword.get_title_from_filename(filename)}
+        for filename in os.listdir("src/resources/")
+    ]
+
 
 # TODO puzzle_id is just the filename for now, we need to change this in the future when we add metadata to the filename
 @app.get("/play/create/{puzzle_id}")
 def create_room(puzzle_id):
     room_code = str(uuid.uuid4())
-    room_path = f"/play/room/{room_code}" # TODO this is bad
+    room_path = f"/play/room/{room_code}"  # TODO this is bad
     room_data[room_path] = Crossword(puzzle_id, room_code)
     return room_path
+
 
 # Socket Events
 @sio.event
@@ -60,9 +60,11 @@ async def connect(sid, environ):
     sio.enter_room(sid, room)
     await sio.emit("crosswordInit", room_data[room].get_puzzle_data(), room=sid)
 
+
 @sio.event
 async def disconnect(sid):
     pass
+
 
 @sio.on("crosswordEdit")
 async def update_crossword(sid, data):
@@ -71,6 +73,7 @@ async def update_crossword(sid, data):
     crossword.set_grid_cell(row, column, character)
     # TODO Only send message to everyone in room but creator (or the creator just discards the event)
     await sio.emit("crosswordUpdate", data, room=room_path)
+
 
 # Mount SocketIO
 app.mount("/", sio_app)

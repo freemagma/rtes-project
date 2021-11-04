@@ -10,11 +10,13 @@ import puz
     The constructor takes a blank instance of the crossword, copies the data,
     and also the associated room_id.
 """
+
+
 class Crossword:
     # I have no idea if this is good but im doing it
     @staticmethod
     def get_title_from_filename(filename):
-        puzzle = puz.read(f"src/resources/{filename}.puz")
+        puzzle = puz.read(f"src/resources/{filename}")
         title = f"{puzzle.title}  {puzzle.copyright}"
         return title
 
@@ -25,11 +27,11 @@ class Crossword:
 
     def set_init_crossword_data(self):
         # TODO: Make file part of a database instead
-        puzzle = puz.read(f"src/resources/{self.filename}.puz")
+        puzzle = puz.read(f"src/resources/{self.filename}")
 
         grid = [
-                [
-                    "#" if puzzle.fill[col + row * puzzle.width] == "." else ""
+            [
+                "#" if puzzle.fill[col + row * puzzle.width] == "." else ""
                 for col in range(puzzle.width)
             ]
             for row in range(puzzle.height)
@@ -82,12 +84,8 @@ class Crossword:
         self.clues = clues
         self.clue_grid = clue_grid
 
-
     def get_label_data(self):
-        data = {
-            "title": self.title,
-            "author": self.author
-        }
+        data = {"title": self.title, "author": self.author}
         return data
 
     def get_puzzle_data(self):
