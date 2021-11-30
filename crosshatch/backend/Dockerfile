@@ -1,9 +1,10 @@
 FROM python:3.9-buster
 
+RUN mkdir app
 WORKDIR /app
 
 ENV PATH="${PATH}:/root/.local/bin"
-ENV PYTHONPATH=/app
+ENV PYTHONPATH=.
 
 COPY requirements.txt .
 RUN pip install --upgrade pip
@@ -16,4 +17,4 @@ RUN apt-get update && apt-get install -y gconf-service libasound2 libatk1.0-0 \
     libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation \
     libappindicator1 libnss3 lsb-release xdg-utils wget
 
-COPY ./app /app
+COPY /app .
