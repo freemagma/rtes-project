@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
-from .models.crossword import Crossword
+from src.models.crossword import Crossword
+from src.api.api import api_router
 
 import socketio
 import uuid
@@ -74,6 +75,7 @@ async def update_crossword(sid, data):
     # TODO Only send message to everyone in room but creator (or the creator just discards the event)
     await sio.emit("crosswordUpdate", data, room=room_path)
 
+app.include_router(api_router)
 
 # Mount SocketIO
 app.mount("/", sio_app)

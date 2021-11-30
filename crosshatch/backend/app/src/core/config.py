@@ -1,4 +1,6 @@
-from pydantic import BaseSettings, PostgresDsn
+from typing import Optional
+
+from pydantic import BaseSettings, PostgresDsn, validator
 
 class Settings(BaseSettings):
     POSTGRES_SERVER: str

@@ -1,0 +1,1 @@
+from .crud_blank_crossword import blank_crossword

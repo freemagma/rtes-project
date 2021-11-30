@@ -3,9 +3,9 @@ from typing import List
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from app.crud.base import CRUDBase
-from app.models.blank_crossword import BlankCrossword
-from app.schemas.blank_crossword import BlankCrosswordCreate, BlankCrosswordUpdate
+from src.crud.base import CRUDBase
+from src.models.blank_crossword import BlankCrossword
+from src.schemas.blank_crossword import BlankCrosswordCreate, BlankCrosswordUpdate
 
 
 class CRUDBlankCrossword(CRUDBase[BlankCrossword, BlankCrosswordCreate, BlankCrosswordUpdate]):

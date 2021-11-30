@@ -6,13 +6,13 @@ from pydantic import BaseModel
 # Shared properties
 class BlankCrosswordBase(BaseModel):
     title: Optional[str] = None
-    puz: Optional[bytearray] = None
+    puz: Optional[bytes] = None
 
 
 # Properties to receive on item creation
 class BlankCrosswordCreate(BlankCrosswordBase):
     title: str
-    puz: bytearray
+    puz: bytes
 
 
 # Properties to receive on item update
@@ -22,9 +22,9 @@ class BlankCrosswordUpdate(BlankCrosswordBase):
 
 # Properties shared by models stored in DB
 class BlankCrosswordInDBBase(BlankCrosswordBase):
-    id: int
+    id: str
     title: str
-    puz: bytearray
+    puz: bytes
 
     class Config:
         orm_mode = True
