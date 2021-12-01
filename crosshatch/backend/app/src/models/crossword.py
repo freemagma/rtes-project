@@ -14,12 +14,6 @@ import puz
 
 #TODO rename to ActiveCrossword (and then persist it, etc.)
 class Crossword:
-    # I have no idea if this is good but im doing it
-    @staticmethod
-    def get_title_from_filename(filename):
-        puzzle = puz.read(f"app/src/resources/{filename}")
-        title = f"{puzzle.title}  {puzzle.copyright}"
-        return title
 
     def __init__(self, filename, room_id):
         self.filename = filename
