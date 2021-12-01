@@ -12,11 +12,12 @@ import puz
 """
 
 
+#TODO rename to ActiveCrossword (and then persist it, etc.)
 class Crossword:
     # I have no idea if this is good but im doing it
     @staticmethod
     def get_title_from_filename(filename):
-        puzzle = puz.read(f"src/resources/{filename}")
+        puzzle = puz.read(f"app/src/resources/{filename}")
         title = f"{puzzle.title}  {puzzle.copyright}"
         return title
 
@@ -27,7 +28,7 @@ class Crossword:
 
     def set_init_crossword_data(self):
         # TODO: Make file part of a database instead
-        puzzle = puz.read(f"src/resources/{self.filename}")
+        puzzle = puz.read(f"app/src/resources/{self.filename}")
 
         grid = [
             [

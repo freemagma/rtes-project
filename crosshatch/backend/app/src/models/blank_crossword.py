@@ -11,4 +11,4 @@ if TYPE_CHECKING:
 class BlankCrossword(Base):
     id = Column(String, primary_key=True, index=True)
     title = Column(String, index=True)
-    puz = Column(LargeBinary)
+    puzfilename = Column(String, index=True)

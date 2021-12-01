@@ -33,23 +33,12 @@ room_data = {}
 def home():
     return "Hello, World!"
 
-
-@app.get("/puzzles")
-def get_puzzles():
-    # TODO this is bad
-    # eventually load from database
-    return [
-        {"id": filename, "name": Crossword.get_title_from_filename(filename)}
-        for filename in os.listdir("src/resources/")
-    ]
-
-
 # TODO puzzle_id is just the filename for now, we need to change this in the future when we add metadata to the filename
-@app.get("/play/create/{puzzle_id}")
-def create_room(puzzle_id):
+@app.get("/play/create/{puzfilename}")
+def create_room(puzfilename):
     room_code = str(uuid.uuid4())
     room_path = f"/play/room/{room_code}"  # TODO this is bad
-    room_data[room_path] = Crossword(puzzle_id, room_code)
+    room_data[room_path] = Crossword(puzfilename, room_code)
     return room_path
 
 

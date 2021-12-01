@@ -8,8 +8,8 @@
           :key="crossword.id"
           class="list-group-item"
         >
-          <div @click="createRoom(crossword.id)">
-            {{ crossword.name }}
+          <div @click="createRoom(crossword.puzfilename)">
+            {{ crossword.title }}
           </div>
         </li>
       </ul>
@@ -28,11 +28,11 @@ export default {
     };
   },
   mounted() {
-    axios.get("/puzzles").then((response) => (this.crosswords = response.data));
+    axios.get("/crosswords").then((response) => (this.crosswords = response.data));
   },
   methods: {
-    createRoom(puzzleId) {
-      axios.get("/play/create/" + puzzleId).then((response) => {
+    createRoom(puzfilename) {
+      axios.get("/play/create/" + puzfilename).then((response) => {
         window.location.href = response.data;
       });
     },

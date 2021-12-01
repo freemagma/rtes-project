@@ -20,7 +20,7 @@ def upgrade():
     op.create_table('blankcrossword',
     sa.Column('id', sa.String(), nullable=False),
     sa.Column('title', sa.String(), nullable=True),
-    sa.Column('puz', sa.LargeBinary(), nullable=True),
+    sa.Column('puzfilename', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_blankcrossword_id'), 'blankcrossword', ['id'], unique=False)

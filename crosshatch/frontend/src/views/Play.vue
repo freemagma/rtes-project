@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      socket: io("ws://localhost:5000", {
+      socket: io("ws://localhost:5001", {
         query: { room: window.location.pathname },
       }),
     };

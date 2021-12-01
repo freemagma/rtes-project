@@ -1,6 +1,7 @@
 from typing import Any, List
+import uuid, os
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 
 from src import crud, models, schemas
@@ -8,8 +9,9 @@ from src.api import deps
 
 router = APIRouter()
 
+PUZZLE_DIR = "app/src/resources"
 
-@router.get("/", response_model=List[schemas.BlankCrossword])
+@router.get("", response_model=List[schemas.BlankCrossword])
 def read_blank_crosswords(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
@@ -19,11 +21,20 @@ def read_blank_crosswords(
     Retrieve blank_crosswords.
     """
     blank_crosswords = crud.blank_crossword.get_multi(db, skip=skip, limit=limit)
-    print(blank_crosswords)
     return blank_crosswords
 
+@router.post("/puzfile")
+def upload_blank_crossword_puzfile(puzfile: UploadFile = File(...)) -> Any:
+    """
+    Upload the blank_crossword associated puz file to FileStorage.
+    """
+    puzfilename = str(uuid.uuid4()) + ".puz"
+    with open(f"{PUZZLE_DIR}/{puzfilename}", "wb") as f:
+        for line in puzfile.file:
+            f.write(line)
+    return puzfilename
 
-@router.post("/", response_model=schemas.BlankCrossword)
+@router.post("", response_model=schemas.BlankCrossword)
 def create_blank_crossword(
     *,
     db: Session = Depends(deps.get_db),
@@ -32,7 +43,7 @@ def create_blank_crossword(
     """
     Create new blank_crossword.
     """
-    blank_crossword = crud.blank_crossword.create(db=db, obj_in=blank_crossword_in, owner_id=current_user.id)
+    blank_crossword = crud.blank_crossword.create(db=db, obj_in=blank_crossword_in)
     return blank_crossword
 
 

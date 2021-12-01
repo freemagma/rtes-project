@@ -6,8 +6,6 @@ from src.core.config import settings
 
 def get_db() -> Generator:
     try:
-        print("ASDASDASD")
-        print(settings.SQLALCHEMY_DATABASE_URI)
         db = Session()
         yield db
     finally:
