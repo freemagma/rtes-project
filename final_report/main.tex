@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage[onehalfspacing]{setspace}
+% \usepackage[bottom=1in, top=1in, left=1in, right=1in]{geometry}
+
+\author{Charlie Gunn and Zach Minot}
+\title{Crosshatch: A Web Application for Crossword Collaboration}
+
+\begin{document}
+\maketitle
+
+\section{Motivation and Introduction}
+\label{mot}
+When doing a crossword puzzle from a physical newspaper, it is easy for a few people to gather around and work on solving it together.
+This is because all of the clues are visible at once, so each person can scan around for clues they know the answer to. However, this technique
+for crossword collaboration does not extend well into the digital world. Most major websites that host interactive crosswords only show a small subset of
+clues at a time (e.g. The LA Times \cite{latcrossword}), forcing all collaborators to focus on the same small portion of the clues. In the authors' personal experience,
+this is an inferior way to collaborate on a crossword: a lot of the fun of joint crosswords is rapidly going back and forth in different areas
+of the grid, calling out newly discovered answers.
+
+To solve this problem, this paper introduces Crosshatch: a web application for crossword collaboration. Crosshatch
+allows multiple participants to work on the \textit{same} crossword from their own personal devices (in a way similar to document-sharing services,
+but for crosswords instead of general documents). To make finding and solving crosswords easy, Crosshatch provides access to multiple free daily crosswords
+from around the US (LA Times, Wall Street Journal, Universal, etc.) and features a convenient user interface for solving.
+
+% enjoyment of crosswords
+% crosswords are really fun to do together!
+% this is easy in a paper newspaper, but really hard online since only one clue displays at once
+% (paper newspaper does not scale to large amounts of people)
+\newpage
+\subsection{Related Work}
+% - paper on collaborative editing. mention how our case is simpler
+Crosshatch's core technological design relies on a specific piece of real-time systems technology: collaborative editing.
+Collaborative real-time editors are applications that enable seemingly instantaneous, simultaneous editing
+of the same digital document by different users.
+Possibly the most popular of collaborative editing tools is Google Docs \cite{googledocs}, a collaborative
+word document tool similar to Microsoft Office Word.
+The complex problem of creating a network structure to facilitate this type of application has been solved with centralized (Client/Server)
+and P2P models \cite{p2p} \cite{p2p2}.
+Furthermore, different protocols, such as push-based \cite{pushbased} or semi-synchronous \cite{semisynchronous}, can be implemented based on the type of information being edited,
+network model constructed, and deadlines for edits to cascade through the network.
+
+However, collaboration on a crossword is much simpler than collaboration on a text file; it requires only
+single character inputs at designated points with no formatting or large edits. This eliminates the main challenge of collaborative editing, which is contradictory edits which are non-trivial to merge (e.g., one user deletes the word ``beet'', while another inserts a `g' to make ``beget''). Crosshatch does not have to deal with these sorts of issues due to the nature of single-character grid-based editing -- the server can perform edits in exactly the order it recieves them, with no issues. See Section \ref{editsharing} for more details.
+
+\section{System Architecture}
+\subsection{Edit Sharing}
+\label{editsharing}
+
+\section{Future Work}
+There are many possibly directions for future work, since there are many additionalo features that would be useful in a crossword editing application. A few possibilities are listed below:
+\begin{itemize}
+	\item Optional incorrect character detection
+  \item UI customization (increase crossword size, add colors to letter inputs, customize controls, etc.)
+	\item Adding a save-and-quit feature
+	\item Adding a chat function
+\end{itemize}
+
+\section{Conclusion}
+
+\newpage
+\bibliography{sources.bib}
+\bibliographystyle{plain}
+
+\end{document}
