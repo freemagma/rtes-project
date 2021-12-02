@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      socket: io("ws://3.84.20.143:5001", {
+      socket: io("ws://54.205.97.70:5001", {
         query: { room: window.location.pathname },
       }),
     };
