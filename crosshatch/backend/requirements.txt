@@ -5,7 +5,7 @@ puzpy==0.2.5
 beautifulsoup4==4.10.0
 requests==2.26.0
 requests-html==0.10.0
-websockets==8.1
+websockets==10.0
 databases[postgresql]==0.5.3
 SQLAlchemy==1.4.27
 alembic==1.7.5
