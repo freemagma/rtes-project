@@ -9,7 +9,7 @@ from src.api import deps
 
 CROSSWORDFIEND_URL = "https://crosswordfiend.com/download/"
 BACKEND_URL = "http://localhost:5001"
-PUZZLE_DIR = "../resources/"
+PUZZLE_DIR = "/app/app/src/resources/"
 
 
 def scrape_crosswordfiend():
@@ -27,10 +27,10 @@ def scrape_crosswordfiend():
         with open(f"{PUZZLE_DIR}/{filename}", "wb") as f:
             f.write(requests.get(link).content)
         blank_crossword = {
-            'title': get_title_from_filename(filename),
-            'puzfilename': filename 
+            "title": get_title_from_filename(filename),
+            "puzfilename": filename,
         }
-        requests.post(BACKEND_URL + "/crosswords", data=blankcrossword)
+        requests.post(BACKEND_URL + "/crosswords", data=blank_crossword)
 
 
 def get_url_filename(url):
@@ -38,9 +38,9 @@ def get_url_filename(url):
 
 
 def get_title_from_filename(filename):
-        puzzle = puz.read(f"app/src/resources/{filename}")
-        title = f"{puzzle.title}  {puzzle.copyright}"
-        return title
+    puzzle = puz.read(f"app/src/resources/{filename}")
+    title = f"{puzzle.title}  {puzzle.copyright}"
+    return title
 
 
 if __name__ == "__main__":
