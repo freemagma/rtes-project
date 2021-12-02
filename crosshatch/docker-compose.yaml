@@ -5,7 +5,7 @@ services:
     restart: always
     env_file:
       - .env
-    image: crosshatch:backend
+    build: ./backend
     ports:
       - 5001:5001
     volumes:
@@ -15,7 +15,7 @@ services:
       - db
       - migration
   migration:
-    image: crosshatch:backend
+    build: ./backend
     volumes:
       - "./backend/app:/app"
     command: alembic upgrade head
@@ -23,7 +23,7 @@ services:
       - db
   frontend:
     restart: always
-    image: crosshatch:frontend
+    build: ./backend
     volumes:
       - "./frontend:/app"
       - "/app/node_modules"
