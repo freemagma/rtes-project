@@ -1,6 +1,7 @@
 from requests_html import HTMLSession
 import requests
 import os
+import json
 import puz
 from urllib.parse import urlparse
 
@@ -30,7 +31,7 @@ def scrape_crosswordfiend():
             "title": get_title_from_filename(filename),
             "puzfilename": filename,
         }
-        requests.post(BACKEND_URL + "/crosswords", data=blank_crossword)
+        requests.post(BACKEND_URL + "/crosswords", data=json.dumps(blank_crossword))
 
 
 def get_url_filename(url):
