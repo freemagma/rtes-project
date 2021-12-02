@@ -13,7 +13,7 @@ from urllib.parse import parse_qs
 app = FastAPI()
 
 # CORS
-cors_allowed_origins = ["http://localhost:8080", "http://54.205.97.70:8080"]
+cors_allowed_origins = ["http://54.205.97.70:8080"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_allowed_origins,
