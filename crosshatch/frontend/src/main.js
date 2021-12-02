@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost:5001/";
+axios.defaults.baseURL = "http://3.84.20.143:5001/";
 
 const app = createApp(App);
 app.use(router);

@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      socket: io("ws://localhost:5001", {
+      socket: io("ws://3.84.20.143:5001", {
         query: { room: window.location.pathname },
       }),
     };
@@ -25,14 +25,18 @@ export default {
       this.$refs.crossword.crosswordInit(data);
     });
     this.socket.on("crosswordUpdate", (data) => {
-      this.$refs.crossword.setCellCharacter(data.row, data.column, data.character)
+      this.$refs.crossword.setCellCharacter(
+        data.row,
+        data.column,
+        data.character
+      );
     });
   },
   methods: {
     sendCrosswordEditEvent(data) {
       this.socket.emit("crosswordEdit", data);
     },
-  }
+  },
 };
 </script>
 

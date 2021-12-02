@@ -13,7 +13,7 @@ from urllib.parse import parse_qs
 app = FastAPI()
 
 # CORS
-cors_allowed_origins = ["http://localhost:8080"]
+cors_allowed_origins = ["http://localhost:8080", "http://3.84.20.143:8080"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_allowed_origins,
@@ -32,6 +32,7 @@ room_data = {}
 @app.get("/")
 def home():
     return "Hello, World!"
+
 
 # TODO puzzle_id is just the filename for now, we need to change this in the future when we add metadata to the filename
 @app.get("/play/create/{puzfilename}")
@@ -63,6 +64,7 @@ async def update_crossword(sid, data):
     crossword.set_grid_cell(row, column, character)
     # TODO Only send message to everyone in room but creator (or the creator just discards the event)
     await sio.emit("crosswordUpdate", data, room=room_path)
+
 
 app.include_router(api_router)
 
