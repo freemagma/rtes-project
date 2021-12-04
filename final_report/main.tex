@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{cite}
 \usepackage{hyperref}
+\usepackage{graphicx}
 \usepackage[onehalfspacing]{setspace}
 % \usepackage[bottom=1in, top=1in, left=1in, right=1in]{geometry}
 
@@ -51,70 +52,83 @@ exactly the order it receives them, with no issues. See Section \ref{editsharing
 \section{System Architecture}
 \subsection{Basic Structure}
 
-In designing Crosshatch, the first decision to make would be what type of application would it be. The authors' have the most
+In designing Crosshatch, it was first important to decide what \textit{type} of application to create. When solving crosswords, the authors have the most
 experience with smartphone apps (particularly, the New York Times Crossword App). However, going this route limits the app to a
-specific platform, and the authors wanted to include as much extendability and scalability in this application as possible. This meant instead
-of any standalone application, the decision was made to make the app a web application. The authors' also have considerably experience in web applications
-than mobile apps, and the coupled with the fact that there are many standardized concepots and libraries for the web reduced the development cost significantly.
-Finally, the ability to play on multiple platforms was enticing enough for the authors to make the decision.
+specific platform, and the authors wanted to include as much extendability and scalability as possible. This
+prompted the decision to create a web application. The authors also have considerably more experience in creating web applications
+than in creating mobile apps, which reduced development time-cost significantly.
 
-Crosshatch was built with four system segments in mind: a frontend user interface, a backend api, a persistent database, 
-and a file storage mechanism. These segments were built using multiple libraries, and all containerized within a Docker application.
+Crosshatch was built with four major system components: a frontend user interface, a backend server and API, a persistent database,
+and a file storage mechanism.
 
-The frontend library of choice was Vue. This decision was mainly superficial--the authors' wanted to try an updated, state-of-the-art library
-that they had never used before. Vue also provided similar concetual programming to React, which both authors have had experience with in the past.
+The frontend library of choice was \textbf{Vue3}. This decision was mainly superficial -- the authors' wanted to try an updated, state-of-the-art library
+that they had never used before. Vue3 also provides somewhat similar conceptual programming to React, which both authors have had experience with in the past.
 
-For the backend, the authors chose FastAPI due to its support and familiarity. The authors have had much experience with Python backend APIs
-and FastAPI, so it was the default choice for the backend for this application.
+For the backend, \textbf{FastAPI} was chosen due to its support and familiarity. The authors have had prior experience with FastAPI and Python backend APIs in general, so it was the default choice for the backend for this application.
 
-PostgresSQL was chosen for the type fo database for similarl reasons to above, but with the added ability for future scalability in the
+\textbf{PostgresSQL} was chosen for the type of database for similar reasons to above, with the added benefit of scalability in the
 future if this application were to extend beyond the scope of this class.
 
-The file storage mechanism is temporarily hosted within the backend. This is acceptable, for now, due to the limited amount of crossword the platform supports.
-However, in the future, this easy solution will likely need to be replaced with some sort of file storage server on the cloud.
+The file storage mechanism is temporarily hosted within the backend. This is acceptable for now due to the limited amount of crossword storage the platform needs;
+however, in the future, this simple solution will likely need to be replaced with some sort of file storage server on the cloud, such as an S3 bucket.
 
-The entire application is compose into a single Docker Application iwth multiple services. The deployed version of Crosshatch is hosted on an AWS EC2 instance.
+The entire thing is packaged into a single docker-compose application with each of these services. The deployed version of Crosshatch is hosted on an AWS EC2 instance, and can be accessed at \url{http://54.205.97.70:8080/}.
 \subsection{Edit Sharing}
 \label{editsharing}
 
 The collaborative crossword architecture was created using the websockets rooms functionality. With websockets, there are rooms,
-or a session, that clients can join and listen for events broadcasted to that specific room. In Crosshatch, the granularity is that
-for each collaborative crossword thereis a room, and each user is a client that can join any rooms they choose. Each time the crossword is edited,
-a single character change event is broadcasted to all other clients, and both the server and the client representation of the crossword is updated
+or sessions, that clients can join and listen for events broadcasted to that specific room. In Crosshatch, a websocket room is created for each individual collaborative crossword, and clients are automatically subscribed to a room when they open the webpage associated with that crossword. Each time the crossword is edited,
+a single character-change event is broadcasted to all other clients in that room, and both the server's and the clients' representations of the crossword are updated
 to match the ground truth.
 
-In Google Docs and other colaborative editing tools, text file edit conflicts can become extremely complex as stated in \ref{relatedwork}. However, Crosshatch eliminatesd all
-editing conflicts with the limitiation of single character edits. The grid system of the crossword allows for the edit graularity of a single character at a single location on the grid.
-Essentially, edit locations are statically determined, and atomic in nature, which allows Crosshatch to consume the edits in order of reception without issue. 
+In Google Docs and other colaborative editing tools, text file edit conflicts can become extremely complex as stated in \ref{relatedwork}. However, Crosshatch eliminates all
+editing conflicts due to the nature of of single character edits.
+Essentially, crossword edits are \textbf{atomic}, and their locations are \textbf{statically determined} by nature, which allows Crosshatch to simply consume the edit events in order of reception without issue. As long as the server broadcasts each edit event before dequeueing the next one, synchronization is guaranteed.
 
 \subsection{Crossword Ingestion}
 
-Another core, but small, part of the application is the ingestion of crosswords from current newspapers. There is no official exposed service
-that the authors could find for this functionality, save for a few websites that self hosted the .puz file representations or some major newspapers.
-To achieve this, a script was written to scrape the website crosswordifend.com and acquire some of the .puz files from the major newspapers for the current day.
+Another core, but small, part of the application is the ingestion of free crosswords from newspapers. There is no official exposed service
+that the authors could find for this functionality, save for a few websites that self host the \texttt{.puz} file representations of some major newspapers.
+To achieve this, a script was written to scrape the website \url{crosswordfiend.com} and acquire some of the \texttt{.puz} files of the current day.
 At the moment, this script must be manually run, but hopefully will eventually be automatically scheduled.
 
 \section{Current Functionality and Workflow}
 
 Crosshatch's main functionality is collaborative crossword editing. A user can create a crosshatch session, and then
-share the link to others to add other users to the session. To choose a crossword for a session, a user can either choose one of the 
-already existing crossword in the database, or upload and title their own crossword in the format of a .puz file. This uploaded .puz file is then added to the database
+share the link with others to add other users to the session. To choose a crossword for a session, a user can either choose one of the
+already existing crosswords in the database, or upload and title their own crossword in the format of a \texttt{.puz} file. This uploaded \texttt{.puz} file is then added to the database
 for all other users to utilize.
 
+\begin{figure}[t]
+  \centering
+  \includegraphics[width = \linewidth]{img/list.png}
+  \caption{The main page of Crosshatch}
+  \label{list}
+\end{figure}
+\begin{figure}[t]
+  \centering
+  \includegraphics[width = \linewidth]{img/crossword.png}
+  \caption{Crosshatch's crossword editing UI}
+  \label{cross}
+\end{figure}
+
+
 % let's add some screenshots here
-There are two main screens: the puzzle select screen and the collaboration screen. The puzzle select screen include the user interface for uploading a custom crossword
-and selecting a crossword to create a session. To upload a custom crossword, the user need to title the crossword in the input form, upload the .puz file representation of the crossword,
+Crosshatch has two main screens: the puzzle select screen (see Figure \ref{list}) and the collaboration screen (see Figure \ref{cross}). The puzzle select screen includes the user interface for uploading a custom crossword
+and selecting a crossword to create a session. To upload a custom crossword, the user needs to title the crossword in the input form, upload the \texttt{.puz} file representation of the crossword,
 and click submit. After the user refreshes the page, they can see their crossword added to the list of current crosswords in the database. To select a crossword,
 the user simply needs to click on the title of the crossword in the list and they will be redirected to their collaborative editing page.
 
 The collaborative editing page showcases only the crossword and the current clue. The current row or column is highlighted on the crossword, and the corresponding clue
-is shown below the crossword. At the most basic form, a user can click on a square to edit, and then type a character to place into the square. The user's cursor will
+is shown below the crossword. At the most basic level, a user can click on a square to edit, and then type a character to place into the square. The user's cursor will
 move to the next square in the current clue, or the next clue if there are no more squares in the current clue. Pressing backspace will delete the character from the current square,
 and move the cursor or clue backwards similarly.
 
 The editing page also offers a set of keyboard controls. The arrow keys will change the clue from across to down or move the cursor in the coresponding direction. Space will
 switch the clue from across to down and vice versa. Delete removes the current letter, but does not move the cursor backwards. Tab will move forward one clue,
-while Shift + Tab will move backwards one clue.
+while Shift + Tab will move backwards one clue. This closely replicates the keyboard interface of the online NYT crossword.
+
+Finally, to collaborate with a friend, all one needs to do is \textit{copy} the URL of their collaborative crossword session and send it. Anyone who goes to that link will be able to simultaneously collaborate on the crossword in real-time!
 
 \section{Future Work}
 There are many possibly directions for future work, since there 
@@ -128,6 +142,9 @@ A few possibilities are listed below:
 \end{itemize}
 
 \section{Conclusion}
+Ultimately, we are very proud of the state that Crosshatch is in, and learned a lot about many different technologies and aspects of software development as we created it. Hopefully we will be able to continue this project in the future to create a more complete application... we already bought a dedicated domain for it!
+
+
 
 \newpage
 \bibliography{sources.bib}
